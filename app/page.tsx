@@ -51,7 +51,7 @@ export default function Home() {
             </div>
 
             <aside className="relative border-l border-primary/35 pl-6 lg:mb-3" aria-label="Program principles">
-              <p className="mb-7 text-xs font-bold uppercase tracking-[.22em] text-primary">The standard</p>
+              <p className="mb-7 text-xs font-bold uppercase tracking-[.22em] text-[#8bb3ff]">The standard</p>
               <div className="space-y-6">
                 {[["01", "Process over prediction"], ["02", "Discipline over impulse"], ["03", "Review over repetition"]].map(([number, label]) => (
                   <div key={number} className="flex items-baseline gap-4 border-b border-white/10 pb-5">
@@ -75,7 +75,7 @@ export default function Home() {
             {siteContent.benefits.map(([number, title, body]) => (
               <article key={title} className="min-h-60 bg-[#07162d] p-7 transition hover:bg-[#0a1d3b]">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-sm text-primary">{number}</span>
+                  <span className="font-mono text-sm text-[#8bb3ff]">{number}</span>
                   <Check className="size-5 text-[#86f0cb]" aria-hidden="true" />
                 </div>
                 <h3 className="mt-14 text-xl font-black tracking-tight">{title}</h3>
@@ -139,7 +139,7 @@ export default function Home() {
           <p className="mt-12 border-t border-white/10 pt-6 text-sm leading-6 text-[#849cc3]">This is education and mentorship—not personalized investment advice, managed accounts, copy trading, or a promise of results.</p>
         </SectionShell>
 
-        <SectionShell id="story" number="06" eyebrow={siteContent.founderStory.eyebrow} title={siteContent.founderStory.title} className="bg-primary text-white">
+        <SectionShell id="story" number="06" eyebrow={siteContent.founderStory.eyebrow} title={siteContent.founderStory.title} className="bg-primary text-white" numberClassName="text-white">
           <div className="grid gap-10 lg:grid-cols-[1fr_.65fr]">
             <div>
               <p className="max-w-3xl text-xl leading-9 text-white/85">{siteContent.founderStory.body}</p>
