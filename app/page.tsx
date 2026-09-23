@@ -15,11 +15,12 @@ import { Faq } from "@/components/faq";
 import { SectionShell } from "@/components/section-shell";
 import { SiteHeader } from "@/components/site-header";
 import { TestimonialForm } from "@/components/testimonial-form";
+import { WebMcpProvider } from "@/components/webmcp-provider";
 import { siteContent } from "@/lib/site-content.mjs";
 
 export default function Home() {
   return (
-    <>
+    <WebMcpProvider>
       <SiteHeader />
       <main className="min-h-screen overflow-hidden bg-background text-foreground">
         <section id="top" className="relative isolate flex min-h-screen items-center pt-24">
@@ -205,6 +206,6 @@ export default function Home() {
           <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-5"><p>Futures trading involves substantial risk of loss. Educational content only; not financial, investment, tax, or legal advice.</p><p className="mt-2">Not affiliated with Discord, CME Group, or Nasdaq. All referenced marks belong to their respective owners.</p></div>
         </div>
       </footer>
-    </>
+    </WebMcpProvider>
   );
 }
