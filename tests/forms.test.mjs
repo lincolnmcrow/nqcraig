@@ -24,6 +24,7 @@ test("a valid application parses", () => {
 test("Discord username and consent are required", () => {
   const result = applicationSchema.safeParse({ ...validApplication, discordUsername: "", acceptedRisk: false });
   assert.equal(result.success, false);
+  assert.equal(result.error.issues.some((issue) => issue.message === "Acknowledge the trading risk."), true);
 });
 
 test("testimonial publication consent is explicit", () => {
@@ -41,4 +42,23 @@ test("testimonial publication consent is explicit", () => {
     allowTestimonial: true,
   });
   assert.equal(result.success, true);
+});
+
+test("testimonial consent errors use clear instructions", () => {
+  const result = testimonialSchema.safeParse({
+    submissionId: validApplication.submissionId,
+    startedAt: validApplication.startedAt,
+    company: "",
+    displayName: "J.",
+    contact: "jordan.trades",
+    role: "Developing trader",
+    testimonial: "Craig helped me become more structured.",
+    honestExperience: false,
+    allowEditing: false,
+    allowName: false,
+    allowTestimonial: false,
+  });
+  assert.equal(result.success, false);
+  assert.equal(result.error.issues.some((issue) => issue.message === "Confirm this is your honest experience."), true);
+  assert.equal(result.error.issues.some((issue) => issue.message === "Permission is required to review this submission."), true);
 });

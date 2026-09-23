@@ -117,7 +117,7 @@ export default function Home() {
           <div className="grid gap-5 md:grid-cols-3">
             {siteContent.steps.map(([number, title, body]) => (
               <article key={title} className="rounded-3xl border border-white/10 p-7">
-                <span className="font-mono text-sm text-primary">{number}</span>
+                <span className="font-mono text-sm text-[#8bb3ff]">{number}</span>
                 <h3 className="mt-20 text-3xl font-black tracking-[-.04em]">{title}</h3>
                 <p className="mt-4 leading-7 text-[#9fb2d2]">{body}</p>
               </article>
@@ -143,7 +143,7 @@ export default function Home() {
           <div className="grid gap-10 lg:grid-cols-[1fr_.65fr]">
             <div>
               <p className="max-w-3xl text-xl leading-9 text-white/85">{siteContent.founderStory.body}</p>
-              <p className="mt-8 max-w-2xl text-sm leading-6 text-white/70">{siteContent.founderStory.note}</p>
+              <p className="mt-8 max-w-2xl text-sm leading-6 text-white">{siteContent.founderStory.note}</p>
             </div>
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-white/20">
               <div className="bg-[#0755eb] p-6"><strong className="block text-4xl font-black">~30</strong><span className="mt-2 block text-sm text-white/75">students mentored</span></div>
@@ -165,10 +165,10 @@ export default function Home() {
         <SectionShell number="08" eyebrow="Student stories" title={siteContent.testimonialEmptyState.title} className="bg-[#06152c]">
           <div className="grid gap-8 lg:grid-cols-[1fr_.75fr] lg:items-start">
             <div><p className="max-w-2xl text-xl leading-8 text-[#b8c8e5]">{siteContent.testimonialEmptyState.body}</p><p className="mt-6 text-sm leading-6 text-[#829bc3]">No placeholder praise. No anonymous profit claims. Only approved experiences from real students.</p></div>
-            <div className="rounded-3xl border border-dashed border-white/20 p-7 text-center"><UsersRound className="mx-auto size-8 text-primary" aria-hidden="true" /><p className="mt-5 font-bold">Already a student?</p><a href="#share-story" className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-primary">Share your experience <ArrowDownRight className="size-4" aria-hidden="true" /></a></div>
+            <div className="rounded-3xl border border-dashed border-white/20 p-7 text-center"><UsersRound className="mx-auto size-8 text-[#8bb3ff]" aria-hidden="true" /><p className="mt-5 font-bold">Already a student?</p><a href="#share-story" className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#8bb3ff]">Share your experience <ArrowDownRight className="size-4" aria-hidden="true" /></a></div>
           </div>
           <div id="share-story" className="mt-10 scroll-mt-24 rounded-3xl border border-white/10 bg-white/[.035] p-7 sm:p-10">
-            <p className="text-sm font-bold uppercase tracking-[.18em] text-primary">Student testimonial form</p>
+            <p className="text-sm font-bold uppercase tracking-[.18em] text-[#8bb3ff]">Student testimonial form</p>
             <p className="mt-3 max-w-2xl text-[#9fb2d2]">Share what the mentorship has meant to you. Nothing is published automatically.</p>
             <TestimonialForm />
           </div>

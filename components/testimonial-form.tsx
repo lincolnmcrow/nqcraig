@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 import { CheckCircle2, LoaderCircle, Send } from "lucide-react";
 import { testimonialSchema } from "@/lib/forms.mjs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -11,11 +12,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-type TestimonialInput = {
-  submissionId: string; startedAt: number; company: string; displayName: string; contact: string;
-  role: string; testimonial: string; honestExperience: boolean; allowEditing: boolean;
-  allowName: boolean; allowTestimonial: boolean;
-};
+type TestimonialInput = z.input<typeof testimonialSchema>;
+type TestimonialOutput = z.output<typeof testimonialSchema>;
 
 const defaults = (): TestimonialInput => ({
   submissionId: crypto.randomUUID(), startedAt: Date.now(), company: "", displayName: "", contact: "", role: "",
@@ -24,11 +22,11 @@ const defaults = (): TestimonialInput => ({
 
 export function TestimonialForm() {
   const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null);
-  const { register, control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<TestimonialInput>({
+  const { register, control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<TestimonialInput, unknown, TestimonialOutput>({
     resolver: zodResolver(testimonialSchema), defaultValues: defaults(), shouldFocusError: true,
   });
 
-  async function onSubmit(values: TestimonialInput) {
+  async function onSubmit(values: TestimonialOutput) {
     setStatus(null);
     try {
       const response = await fetch("/api/testimonial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
@@ -66,6 +64,7 @@ function Field({ label, error, children }: { label: string; error?: string; chil
   return <label className="block"><span className="mb-2 block text-sm font-bold">{label}</span>{children}{error && <span className="mt-2 block text-sm font-semibold text-[#ff8aa0]">{error}</span>}</label>;
 }
 
-function Consent({ name, control, error, children }: { name: "honestExperience" | "allowTestimonial" | "allowName" | "allowEditing"; control: any; error?: string; children: React.ReactNode }) {
-  return <div><Controller name={name} control={control} render={({ field }) => <label className="flex items-start gap-3 text-sm leading-6 text-[#b8c8e5]"><Checkbox checked={field.value} onCheckedChange={(value) => field.onChange(value === true)} aria-invalid={!!error} className="mt-1" /> <span>{children}</span></label>} />{error && <span className="mt-2 block text-sm font-semibold text-[#ff8aa0]">{error}</span>}</div>;
+function Consent({ name, control, error, children }: { name: "honestExperience" | "allowTestimonial" | "allowName" | "allowEditing"; control: Control<TestimonialInput, unknown, TestimonialOutput>; error?: string; children: React.ReactNode }) {
+  const errorId = `${name}-error`;
+  return <div><Controller name={name} control={control} render={({ field }) => <label className="flex items-start gap-3 text-sm leading-6 text-[#b8c8e5]"><Checkbox ref={field.ref} onBlur={field.onBlur} checked={field.value} onCheckedChange={(value) => field.onChange(value === true)} aria-invalid={!!error} aria-describedby={error ? errorId : undefined} className="mt-1" /> <span>{children}</span></label>} />{error && <span id={errorId} className="mt-2 block text-sm font-semibold text-[#ff9eb0]">{error}</span>}</div>;
 }
