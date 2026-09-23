@@ -10,9 +10,11 @@ import {
   UsersRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ApplicationForm } from "@/components/application-form";
 import { Faq } from "@/components/faq";
 import { SectionShell } from "@/components/section-shell";
 import { SiteHeader } from "@/components/site-header";
+import { TestimonialForm } from "@/components/testimonial-form";
 import { siteContent } from "@/lib/site-content.mjs";
 
 export default function Home() {
@@ -166,7 +168,8 @@ export default function Home() {
           </div>
           <div id="share-story" className="mt-10 scroll-mt-24 rounded-3xl border border-white/10 bg-white/[.035] p-7 sm:p-10">
             <p className="text-sm font-bold uppercase tracking-[.18em] text-primary">Student testimonial form</p>
-            <p className="mt-3 max-w-2xl text-[#9fb2d2]">The secure submission form appears here in the complete build. Nothing is published automatically.</p>
+            <p className="mt-3 max-w-2xl text-[#9fb2d2]">Share what the mentorship has meant to you. Nothing is published automatically.</p>
+            <TestimonialForm />
           </div>
         </SectionShell>
 
@@ -184,7 +187,8 @@ export default function Home() {
             </div>
             <div className="rounded-[2rem] border border-[#cbd7ea] bg-white p-7 shadow-[0_25px_80px_rgb(4_17_38/12%)] sm:p-10">
               <p className="text-sm font-bold uppercase tracking-[.18em] text-[#075cff]">Application form</p>
-              <p className="mt-4 text-[#5a6b88]">The secure application form appears here in the complete build.</p>
+              <p className="mt-4 text-[#5a6b88]">Every field helps Craig understand where you are and whether the program is a fit.</p>
+              <div className="mt-8"><ApplicationForm /></div>
             </div>
           </div>
         </section>
