@@ -1,106 +1,72 @@
-const sidebarWidths = [74, 58, 82, 66, 71, 54];
-const articleWidths = [100, 97, 94, 98, 86];
+import { ArrowDownRight, MessageCircleMore } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="fixed inset-0 overflow-hidden bg-[#fbfaf8] text-zinc-900">
-      <header
-        aria-hidden="true"
-        className="grid h-[76px] grid-cols-[1fr_auto_1fr] items-center border-b border-stone-200 bg-white/95 px-6 sm:px-14"
-      >
-        <div className="flex items-center gap-3">
-          <span className="h-9 w-9 rounded-full bg-stone-100" />
-          <span className="h-3.5 w-28 rounded-full bg-stone-100" />
-        </div>
-        <span className="hidden h-9 w-[min(30vw,420px)] rounded-xl bg-stone-100 sm:block" />
-        <div className="flex items-center justify-end gap-3">
-          <span className="hidden h-9 w-9 rounded-full bg-stone-100 sm:block" />
-          <span className="h-9 w-24 rounded-xl bg-stone-100" />
+    <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#041126]/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
+          <a href="#top" className="font-display text-xl font-black tracking-[-0.04em]">
+            nq<span className="text-primary">craig</span>
+          </a>
+          <a
+            href="#apply"
+            className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#2a6bff] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          >
+            Apply now
+          </a>
         </div>
       </header>
 
-      <div
-        aria-hidden="true"
-        className="grid h-[calc(100%-76px)] grid-cols-[180px_minmax(0,1fr)_260px] gap-10 px-6 pb-24 pt-10 opacity-55 max-lg:grid-cols-[150px_minmax(0,1fr)] max-sm:grid-cols-1 sm:px-14"
-      >
-        <aside className="hidden border-r border-stone-200 pr-7 sm:block">
-          <div className="mb-6 h-2.5 w-16 rounded-full bg-stone-200" />
-          <div className="space-y-4">
-            {sidebarWidths.map((width) => (
-              <div key={width} className="flex items-center gap-3">
-                <span className="h-4 w-4 rounded bg-stone-200" />
-                <span
-                  className="h-2.5 rounded-full bg-stone-200"
-                  style={{ width: `${width}%` }}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="mb-6 mt-9 h-2.5 w-24 rounded-full bg-stone-200" />
-          <div className="space-y-4">
-            {sidebarWidths.slice(0, 3).map((width) => (
-              <span
-                key={width}
-                className="block h-2.5 rounded-full bg-stone-200"
-                style={{ width: `${width}%` }}
-              />
-            ))}
-          </div>
-        </aside>
-
-        <article className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-          <div className="space-y-3">
-            <div className="h-2.5 w-28 rounded-full bg-stone-200" />
-            <div className="h-7 w-4/5 rounded-lg bg-stone-200" />
-            <div className="h-7 w-3/5 rounded-lg bg-stone-200" />
-          </div>
-          <div className="min-h-[240px] flex-1 rounded-2xl bg-stone-200" />
-          <div className="flex items-center gap-3">
-            <span className="h-9 w-9 rounded-full bg-stone-200" />
-            <span className="h-2.5 w-28 rounded-full bg-stone-200" />
-          </div>
-          <div className="space-y-2">
-            {articleWidths.map((width) => (
-              <span
-                key={width}
-                className="block h-2.5 rounded-full bg-stone-200"
-                style={{ width: `${width}%` }}
-              />
-            ))}
-          </div>
-        </article>
-
-        <aside className="space-y-5 max-lg:hidden">
-          {[0, 1].map((card) => (
-            <div
-              key={card}
-              className="space-y-4 rounded-2xl border border-stone-200 bg-white/70 p-6"
-            >
-              <span className="block h-10 w-10 rounded-full bg-stone-200" />
-              <span className="block h-3 w-3/5 rounded-full bg-stone-200" />
-              <span className="block h-2.5 w-full rounded-full bg-stone-200" />
-              <span className="block h-2.5 w-4/5 rounded-full bg-stone-200" />
-              <span className="block h-8 w-24 rounded-lg bg-stone-200" />
+      <section id="top" className="relative isolate flex min-h-screen items-center pt-24">
+        <div className="market-grid absolute inset-0 -z-20 opacity-50" aria-hidden="true" />
+        <div className="absolute -right-40 top-20 -z-10 h-[34rem] w-[34rem] rounded-full bg-primary/30 blur-[100px]" aria-hidden="true" />
+        <div className="mx-auto grid w-full max-w-7xl gap-16 px-5 py-20 sm:px-8 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
+          <div>
+            <div className="mb-7 flex w-fit items-center gap-2 rounded-full border border-primary/35 bg-primary/10 px-4 py-2 text-sm font-semibold text-[#b9cdff]">
+              <MessageCircleMore className="size-4" aria-hidden="true" />
+              Lifetime mentorship · Built around Discord
             </div>
-          ))}
-        </aside>
-      </div>
+            <h1 className="font-display max-w-5xl text-[clamp(3.8rem,9vw,8.5rem)] font-black leading-[.82] tracking-[-0.075em] text-balance">
+              Master the NQ.
+              <span className="mt-3 block text-primary">Build a repeatable process.</span>
+            </h1>
+            <p className="mt-9 max-w-2xl text-lg leading-8 text-[#b8c8e5] sm:text-xl">
+              Learn directly from nqcraig, sharpen your decision-making with other traders,
+              and build discipline inside a Discord-first community designed for the long run.
+            </p>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <a href="#apply" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#2a6bff] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
+                Apply for Mentorship <ArrowDownRight className="size-5" aria-hidden="true" />
+              </a>
+              <a href="#program" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 font-bold transition hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
+                See the program
+              </a>
+            </div>
+          </div>
 
-      <output
-        aria-live="polite"
-        aria-atomic="true"
-        className="absolute left-1/2 top-[clamp(96px,13vh,122px)] w-[min(620px,calc(100%-40px))] -translate-x-1/2 rounded-[18px] border border-stone-200 bg-white/95 px-5 py-5 shadow-[0_18px_50px_rgb(24_24_27/9%)] backdrop-blur-sm"
-      >
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.09em] text-stone-500">
-          Building your site
+          <aside className="relative border-l border-primary/35 pl-6 lg:mb-3" aria-label="Program principles">
+            <p className="mb-7 text-xs font-bold uppercase tracking-[.22em] text-primary">The standard</p>
+            <div className="space-y-6">
+              {[
+                ["01", "Process over prediction"],
+                ["02", "Discipline over impulse"],
+                ["03", "Review over repetition"],
+              ].map(([number, label]) => (
+                <div key={number} className="flex items-baseline gap-4 border-b border-white/10 pb-5">
+                  <span className="font-mono text-xs text-[#7894c2]">{number}</span>
+                  <span className="font-display text-xl font-bold tracking-tight">{label}</span>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </div>
+        <p className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-[#06152c]/90 px-5 py-4 text-center text-sm font-medium text-[#aebfdd]">
+          Futures trading involves substantial risk of loss and is not suitable for everyone.
         </p>
-        <h1 className="text-xl font-semibold tracking-tight">
-          Your site is taking shape
-        </h1>
-        <p className="mt-1 text-sm text-stone-500">
-          Your first version will appear here automatically when it’s ready.
-        </p>
-      </output>
+      </section>
+
+      <section id="program" className="sr-only" aria-label="Program details" />
+      <section id="apply" className="sr-only" aria-label="Mentorship application" />
     </main>
   );
 }
