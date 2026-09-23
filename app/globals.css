@@ -120,3 +120,7 @@ body {
     animation-duration: 0.01ms !important;
   }
 }
+
+.legal-copy section + section { margin-top: 3rem; }
+.legal-copy h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; }
+.legal-copy p { margin-top: 0.85rem; color: #b8c8e5; font-size: 1rem; line-height: 1.85; }
