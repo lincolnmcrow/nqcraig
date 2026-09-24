@@ -28,3 +28,8 @@ test("confidentiality copy includes the group-platform boundary", () => {
   assert.match(siteContent.confidentiality.body, /cannot guarantee/i);
   assert.match(siteContent.confidentiality.body, /third-party|Discord/i);
 });
+
+test("social links point to Craig's @nqcraig profiles", () => {
+  assert.equal(siteContent.social.tiktok, "https://www.tiktok.com/@nqcraig");
+  assert.equal(siteContent.social.instagram, "https://www.instagram.com/nqcraig/");
+});

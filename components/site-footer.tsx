@@ -17,7 +17,7 @@ export function SiteFooter() {
             {legalLinks.map(([label, href]) => <a key={href} href={href} className="inline-flex items-center gap-1.5 transition hover:text-white">{label}<ArrowUpRight className="size-3.5" aria-hidden="true" /></a>)}
           </div>
         </div>
-        <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-5"><p>Futures trading involves substantial risk of loss. Educational content only; not financial, investment, tax, or legal advice.</p><p className="mt-2">Not affiliated with Discord, CME Group, TikTok, or Nasdaq. All referenced marks belong to their respective owners.</p></div>
+        <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-5"><p>Futures trading involves substantial risk of loss. Educational content only; not financial, investment, tax, or legal advice.</p><p className="mt-2">Not affiliated with Discord, TikTok, Instagram, CME Group, or Nasdaq. All referenced marks belong to their respective owners.</p></div>
       </div>
     </footer>
   );

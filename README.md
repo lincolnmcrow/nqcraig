@@ -33,7 +33,7 @@ Netlify's free plan includes 100 form submissions per month. Spam is filtered by
 
 ## Before launch
 
-- Replace the placeholder TikTok and Discord links in `lib/site-content.mjs` (`social.tiktok`, `social.discord`).
+- Replace the placeholder Discord invite in `lib/site-content.mjs` (`social.discord`). TikTok and Instagram already point to @nqcraig.
 - Have the Terms, Privacy, Risk Disclosure, and Testimonial Terms pages reviewed by qualified counsel.
 
 ## How it fits together
