@@ -1,7 +1,7 @@
 # Netlify static site, multi-step forms, thank-you and 404 pages
 
 Date: 2026-09-23
-Status: Approved in conversation; pending written-spec review
+Status: Implemented
 
 ## Goal
 

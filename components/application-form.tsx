@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Controller, useForm, type Control } from "react-hook-form";
+import { useState, type FormEvent } from "react";
+import { Controller, useForm, type Control, type FieldErrors } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
-import { ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
-import { applicationSchema } from "@/lib/forms.mjs";
+import { ArrowRight, CircleAlert } from "lucide-react";
+import { applicationSchema, applicationSteps } from "@/lib/forms.mjs";
+import { submitToNetlify } from "@/lib/submit-form";
+import { StepHeader, StepNav } from "@/components/form-steps";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 type ApplicationInput = z.input<typeof applicationSchema>;
 type ApplicationOutput = z.output<typeof applicationSchema>;
+type FieldName = keyof ApplicationInput;
 
 const defaults = (): ApplicationInput => ({
   submissionId: crypto.randomUUID(), startedAt: Date.now(), company: "", fullName: "", email: "",
@@ -22,48 +25,95 @@ const defaults = (): ApplicationInput => ({
   acceptedRisk: false, acceptedPrivacy: false,
 });
 
+const labels: Partial<Record<FieldName, string>> = {
+  fullName: "Full name", email: "Email", discordUsername: "Discord username", experience: "Trading experience",
+  challenges: "Current challenges", goals: "Trading goals", reason: "Why this mentorship",
+};
+
+const reviewSteps = applicationSteps.slice(0, -1);
+
 export function ApplicationForm() {
-  const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null);
-  const { register, control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ApplicationInput, unknown, ApplicationOutput>({
+  const [step, setStep] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [sent, setSent] = useState(false);
+  const router = useRouter();
+  const { register, control, handleSubmit, trigger, getValues, formState: { errors, isSubmitting } } = useForm<ApplicationInput, unknown, ApplicationOutput>({
     resolver: zodResolver(applicationSchema), defaultValues: defaults(), shouldFocusError: true,
   });
+  const last = step === applicationSteps.length - 1;
 
   async function onSubmit(values: ApplicationOutput) {
-    setStatus(null);
+    setError(null);
     try {
-      const response = await fetch("/api/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
-      const payload = await response.json() as { ok: boolean; message: string };
-      setStatus(payload);
-      if (payload.ok) reset(defaults());
-    } catch {
-      setStatus({ ok: false, message: "Your application could not be sent. Your answers are still here—please try again." });
+      await submitToNetlify("application", values);
+      setSent(true);
+      router.push("/thank-you/");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Your application could not be sent. Please try again.");
     }
   }
 
+  // Jump back to the first step with a problem if anything slipped through.
+  function onInvalid(invalid: FieldErrors<ApplicationInput>) {
+    const index = applicationSteps.findIndex((item) => item.fields.some((field) => field in invalid));
+    if (index >= 0) setStep(index);
+  }
+
+  async function handleForm(event: FormEvent<HTMLFormElement>) {
+    if (last) return handleSubmit(onSubmit, onInvalid)(event);
+    event.preventDefault();
+    if (await trigger(applicationSteps[step].fields as FieldName[], { shouldFocus: true })) setStep(step + 1);
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+    <form onSubmit={handleForm} className="space-y-6" noValidate>
       <input {...register("company")} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Full name" error={errors.fullName?.message}><Input {...register("fullName")} autoComplete="name" aria-invalid={!!errors.fullName} className="h-12 bg-[#f7faff]" /></Field>
-        <Field label="Email" error={errors.email?.message}><Input {...register("email")} type="email" autoComplete="email" aria-invalid={!!errors.email} className="h-12 bg-[#f7faff]" /></Field>
-      </div>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <StepHeader steps={applicationSteps} current={step} tone="light" />
+
+      {step === 0 && <>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Full name" error={errors.fullName?.message}><Input {...register("fullName")} autoComplete="name" aria-invalid={!!errors.fullName} className="h-12 bg-[#f7faff]" /></Field>
+          <Field label="Email" error={errors.email?.message}><Input {...register("email")} type="email" autoComplete="email" aria-invalid={!!errors.email} className="h-12 bg-[#f7faff]" /></Field>
+        </div>
         <Field label="Discord username" hint="Double-check this—we may contact you here." error={errors.discordUsername?.message}><Input {...register("discordUsername")} autoComplete="off" placeholder="username" aria-invalid={!!errors.discordUsername} className="h-12 bg-[#f7faff] placeholder:text-[#52627d]" /></Field>
+      </>}
+
+      {step === 1 && <>
         <Field label="Trading experience" error={errors.experience?.message} errorId="experience-error">
           <Controller name="experience" control={control} render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}><SelectTrigger ref={field.ref} onBlur={field.onBlur} className="h-12 w-full bg-[#f7faff] data-[placeholder]:text-[#52627d]" aria-invalid={!!errors.experience} aria-describedby={errors.experience ? "experience-error" : undefined}><SelectValue placeholder="Choose your level" /></SelectTrigger><SelectContent><SelectItem value="Brand new to futures">Brand new to futures</SelectItem><SelectItem value="Learning the basics">Learning the basics</SelectItem><SelectItem value="Actively trading NQ">Actively trading NQ</SelectItem><SelectItem value="Experienced trader">Experienced trader</SelectItem></SelectContent></Select>
           )} />
         </Field>
-      </div>
-      <Field label="What are your trading goals?" error={errors.goals?.message}><Textarea {...register("goals")} rows={4} aria-invalid={!!errors.goals} className="min-h-28 bg-[#f7faff]" /></Field>
-      <Field label="What challenges are you facing right now?" error={errors.challenges?.message}><Textarea {...register("challenges")} rows={4} aria-invalid={!!errors.challenges} className="min-h-28 bg-[#f7faff]" /></Field>
-      <Field label="Why do you want to join this mentorship?" error={errors.reason?.message}><Textarea {...register("reason")} rows={4} aria-invalid={!!errors.reason} className="min-h-28 bg-[#f7faff]" /></Field>
-      <Consent name="acceptedRisk" control={control} error={errors.acceptedRisk?.message}>I understand that futures trading involves substantial risk of loss and that mentorship does not guarantee results.</Consent>
-      <Consent name="acceptedPrivacy" control={control} error={errors.acceptedPrivacy?.message}>I agree to the <a href="/privacy" className="font-bold text-[#075cff] underline underline-offset-2">privacy notice</a> and consent to being contacted through Discord or email.</Consent>
-      {status && <Alert variant={status.ok ? "default" : "destructive"} className={status.ok ? "border-[#9adbbc] bg-[#eefbf5] text-[#124a32]" : ""}><CheckCircle2 aria-hidden="true" /><AlertDescription className={status.ok ? "text-[#124a32]" : ""}>{status.message}</AlertDescription></Alert>}
-      <Button type="submit" disabled={isSubmitting} className="h-14 w-full rounded-full text-base font-bold sm:w-auto sm:px-8">
-        {isSubmitting ? <><LoaderCircle className="animate-spin" /> Sending application</> : <>Submit application <ArrowRight /></>}
-      </Button>
+        <Field label="What challenges are you facing right now?" error={errors.challenges?.message}><Textarea {...register("challenges")} rows={4} aria-invalid={!!errors.challenges} className="min-h-28 bg-[#f7faff]" /></Field>
+      </>}
+
+      {step === 2 && <>
+        <Field label="What are your trading goals?" error={errors.goals?.message}><Textarea {...register("goals")} rows={4} aria-invalid={!!errors.goals} className="min-h-28 bg-[#f7faff]" /></Field>
+        <Field label="Why do you want to join this mentorship?" error={errors.reason?.message}><Textarea {...register("reason")} rows={4} aria-invalid={!!errors.reason} className="min-h-28 bg-[#f7faff]" /></Field>
+      </>}
+
+      {last && <>
+        <div className="space-y-3">
+          {reviewSteps.map((item, index) => (
+            <section key={item.title} className="rounded-2xl border border-[#cbd7ea] bg-[#f7faff] p-5">
+              <div className="flex items-center justify-between gap-4">
+                <h4 className="font-bold">{item.title}</h4>
+                <button type="button" onClick={() => setStep(index)} className="text-sm font-bold text-[#075cff] underline underline-offset-2" aria-label={`Edit ${item.title}`}>Edit</button>
+              </div>
+              <dl className="mt-3 space-y-3 text-sm">
+                {item.fields.map((name) => (
+                  <div key={name}><dt className="text-[#52627d]">{labels[name as FieldName]}</dt><dd className="mt-0.5 whitespace-pre-wrap break-words font-medium">{String(getValues(name as FieldName) ?? "")}</dd></div>
+                ))}
+              </dl>
+            </section>
+          ))}
+        </div>
+        <Consent name="acceptedRisk" control={control} error={errors.acceptedRisk?.message}>I understand that futures trading involves substantial risk of loss and that mentorship does not guarantee results.</Consent>
+        <Consent name="acceptedPrivacy" control={control} error={errors.acceptedPrivacy?.message}>I agree to the <a href="/privacy/" className="font-bold text-[#075cff] underline underline-offset-2">privacy notice</a> and consent to being contacted through Discord or email.</Consent>
+      </>}
+
+      {error && <Alert variant="destructive"><CircleAlert aria-hidden="true" /><AlertDescription>{error}</AlertDescription></Alert>}
+      <StepNav current={step} total={applicationSteps.length} submitting={isSubmitting || sent} submitLabel="Submit application" submittingLabel="Sending application" submitIcon={<ArrowRight />} onBack={() => { setError(null); setStep(step - 1); }} />
     </form>
   );
 }

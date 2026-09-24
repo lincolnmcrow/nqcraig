@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Forms</title></head>
+  <body>
+    <!-- Netlify reads these at deploy time to register the forms. The real forms are the React ones on the home page. -->
+    <form name="application" data-netlify="true" netlify-honeypot="company" hidden>
+      <input type="hidden" name="form-name" value="application">
+      <input name="company">
+      <input name="fullName">
+      <input name="email" type="email">
+      <input name="discordUsername">
+      <input name="experience">
+      <textarea name="challenges"></textarea>
+      <textarea name="goals"></textarea>
+      <textarea name="reason"></textarea>
+      <input name="acceptedRisk">
+      <input name="acceptedPrivacy">
+    </form>
+    <form name="testimonial" data-netlify="true" netlify-honeypot="company" hidden>
+      <input type="hidden" name="form-name" value="testimonial">
+      <input name="company">
+      <input name="displayName">
+      <input name="contact">
+      <input name="role">
+      <textarea name="testimonial"></textarea>
+      <input name="honestExperience">
+      <input name="allowTestimonial">
+      <input name="allowName">
+      <input name="allowEditing">
+    </form>
+  </body>
+</html>

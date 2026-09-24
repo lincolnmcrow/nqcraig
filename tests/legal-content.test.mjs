@@ -11,7 +11,7 @@ test("risk disclosure balances the mentorship message", async () => {
 
 test("privacy explains collection, delivery, Discord contact, and retention limits", async () => {
   const copy = await route("privacy");
-  for (const phrase of ["application", "testimonial", "email delivery provider", "discord", "retain", "contact details"]) assert.match(copy, new RegExp(phrase));
+  for (const phrase of ["application", "testimonial", "netlify forms", "email notification", "discord", "retain", "contact details"]) assert.match(copy, new RegExp(phrase));
 });
 
 test("testimonial terms require truth and permission without automatic publication", async () => {

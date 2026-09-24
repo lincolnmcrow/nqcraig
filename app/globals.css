@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 
+/* The site has a single fixed palette, so shadcn's `dark:` styles only apply under an explicit
+   `.dark` class (never set) instead of following the visitor's OS color scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @utility scrollbar-thin {
   scrollbar-width: thin;
 }

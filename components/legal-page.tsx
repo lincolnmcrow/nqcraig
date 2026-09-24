@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export function LegalPage({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
   return (
     <main className="min-h-screen bg-[#041126] px-5 py-10 text-[#f7faff] sm:px-8">
       <div className="mx-auto max-w-3xl">
         <div className="flex items-center justify-between gap-5">
-          <a href="/" className="inline-flex items-center gap-2 text-sm font-bold text-[#9cb6e4] hover:text-white"><ArrowLeft className="size-4" /> Back to website</a>
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-[#9cb6e4] hover:text-white"><ArrowLeft className="size-4" /> Back to website</Link>
           <span className="font-display text-lg font-black">nq<span className="text-primary">craig</span></span>
         </div>
         <header className="mt-20 border-b border-white/10 pb-10">
